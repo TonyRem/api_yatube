@@ -1,8 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from posts.models import Post, Comment, Group
 from api.serializers import PostSerializer, CommentSerializer, GroupSerializer
@@ -44,7 +43,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         post_id = self.kwargs.get("post_id")
         if not post_id:
-            raise ValidationError("Необходимо указать id поста")
+            raise ValidationError("Некорректный запрос: не указан post_id")
         post = get_object_or_404(Post, pk=post_id)
         serializer.save(author=self.request.user, post=post)
 
