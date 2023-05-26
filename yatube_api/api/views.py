@@ -41,7 +41,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         queryset = Comment.objects.filter(post=post_id)
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data)
-    
+
     def perform_create(self, serializer):
         post_id = self.kwargs.get("post_id")
         if not post_id:
